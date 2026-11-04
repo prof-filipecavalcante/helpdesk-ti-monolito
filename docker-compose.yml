@@ -1,0 +1,12 @@
+services:
+  helpdesk:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DADOS_EXEMPLO: "1"
+    volumes:
+      - dados:/dados
+
+volumes:
+  dados:
