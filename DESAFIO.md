@@ -62,6 +62,28 @@ As linhas tracejadas são o **bônus**.
 7. **Mesmas funcionalidades:** abrir, atribuir, mudar status, comentar e ver o painel continuam funcionando, com as mesmas regras (SLA e transições de status).
 8. **README do projeto:** diagrama da nova arquitetura em Mermaid, como rodar e as decisões que você tomou.
 
+## Vídeo de demonstração (obrigatório)
+
+Grave um vídeo de **3 a 5 minutos** mostrando a nova versão em microsserviços funcionando.
+Publique no YouTube (como **não listado**) ou no Google Drive (com acesso para quem tiver o link)
+e coloque o link no início do seu README.
+
+O vídeo deve mostrar, nesta ordem:
+
+1. **A arquitetura:** o diagrama do seu README, explicando os serviços e como eles conversam.
+2. **Tudo subindo:** `docker compose up --build` e, em seguida, `docker compose ps` com todos os contêineres no ar.
+3. **O fluxo completo pela tela:** abrir um chamado, atribuir a um técnico, resolver e fechar, tudo passando pelo gateway.
+4. **Bancos separados:** mostre que cada serviço tem o seu banco (por exemplo, os volumes ou os arquivos de cada um).
+5. **A falha de um serviço:** pare o Inventário com `docker compose stop inventario` e mostre que:
+   - a lista de usuários e de chamados continua funcionando;
+   - abrir um chamado com equipamento mostra um erro claro, sem travar o sistema.
+
+   Depois, suba o serviço de novo com `docker compose start inventario`.
+6. **O que é novo em relação ao monólito:** explique o que mudou e o que ficou melhor ou mais difícil (por exemplo: cada serviço pode ser publicado sozinho, mas agora existe a rede no meio).
+7. **Bônus (se fez):** os eventos chegando ao serviço de Notificações e os testes rodando.
+
+Fale com suas palavras. O vídeo não precisa ter edição: uma gravação de tela com sua voz basta.
+
 ## Bônus
 
 - **Notificações por evento:** o serviço de Chamados publica os eventos `ChamadoAberto`, `ChamadoAtribuido` e `ChamadoResolvido` em uma fila (por exemplo, Redis ou RabbitMQ). Um serviço de **Notificações** consome esses eventos e grava os avisos. Se Notificações cair, os chamados continuam sendo abertos.
@@ -86,9 +108,13 @@ As linhas tracejadas são o **bônus**.
 | Execução | `docker compose up --build` sobe tudo sem ajustes manuais |
 | Funcionalidades | Fluxo completo de um chamado funcionando |
 | Documentação | README com diagrama, instruções e decisões |
+| Vídeo | Roteiro completo, com a falha de um serviço e a explicação do que mudou |
 | Histórico | Commits ao longo do trabalho, um serviço por vez, com mensagens claras |
 | Bônus | Eventos, testes por serviço e rota de saúde |
 
 ## Entrega
 
-Envie ao professor o **link do seu repositório**, no prazo combinado em aula.
+Envie ao professor, no prazo combinado em aula:
+
+- o **link do seu repositório**;
+- o **link do vídeo** (também no início do README).
