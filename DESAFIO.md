@@ -14,6 +14,7 @@ A empresa cresceu e cada parte do sistema passou a ter um time próprio. A sua m
 1. No topo deste repositório, clique em **Use this template → Create a new repository**.
 2. Crie o repositório na **sua conta**, **público**, com o nome `helpdesk-microsservicos-<seu-nome>`.
 3. Rode o monólito antes de mudar qualquer coisa (veja o [README](README.md)) e conheça as telas e as rotas.
+4. Entre com as contas de exemplo (senha `Helpdesk2026`): **carla@empresa.com** (técnica) para o fluxo completo e **ana@empresa.com** (solicitante) para ver as permissões. A lista completa está no README, em [Contas de acesso](README.md#contas-de-acesso).
 
 ## Onde está hoje (monólito)
 

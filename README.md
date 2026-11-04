@@ -53,18 +53,27 @@ Depois abra:
 - Tela do HelpDesk: http://localhost:8000
 - Documentação da API (Swagger): http://localhost:8000/docs (clique em **Authorize** e cole o token do login)
 
-### Contas de exemplo
+### Contas de acesso
 
-O sistema começa com dados de exemplo. Todas as contas usam a senha `Helpdesk2026`
-(mude com a variável `SENHA_EXEMPLO`).
+Não é preciso criar conta: o sistema já começa com estes usuários.
+Todos usam a senha **`Helpdesk2026`**.
 
-| E-mail | Perfil |
-|---|---|
-| `admin@empresa.com` | Administrador |
-| `carla@empresa.com`, `diego@empresa.com` | Técnico |
-| `ana@empresa.com`, `bruno@empresa.com` | Solicitante |
+| E-mail | Perfil | O que pode fazer |
+|---|---|---|
+| `admin@empresa.com` | Administrador | Tudo, inclusive cadastrar usuários |
+| `carla@empresa.com` | Técnica | Ver todos os chamados, atribuir, resolver e cadastrar equipamentos |
+| `diego@empresa.com` | Técnico | O mesmo que a Carla |
+| `ana@empresa.com` | Solicitante | Abrir chamados e ver só os próprios |
+| `bruno@empresa.com` | Solicitante | O mesmo que a Ana |
 
-> Os dados de exemplo são só para aula. Em produção, use `DADOS_EXEMPLO=0`.
+Dicas:
+
+- Para testar o fluxo completo (abrir, atribuir, resolver e fechar), entre como **Carla**.
+- Para testar as permissões, entre como **Ana**: ela não vê os chamados do Bruno.
+- Para trocar a senha de todas as contas, defina `SENHA_EXEMPLO` no arquivo `.env`.
+- As contas só são criadas quando o sistema sobe com `DADOS_EXEMPLO=1` (o padrão), e só na primeira vez, com o banco vazio.
+
+> Estas contas têm senha conhecida e servem só para aula. Em produção, use `DADOS_EXEMPLO=0`.
 
 ### Configuração
 
