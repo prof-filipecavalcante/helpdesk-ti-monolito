@@ -2,11 +2,21 @@ services:
   helpdesk:
     build: .
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"   # só acessível pelo próprio computador
+    env_file:
+      - path: .env
+        required: false
     environment:
-      DADOS_EXEMPLO: "1"
+      DADOS_EXEMPLO: ${DADOS_EXEMPLO:-1}
     volumes:
       - dados:/dados
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
 
 volumes:
   dados:

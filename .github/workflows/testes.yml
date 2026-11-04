@@ -1,12 +1,22 @@
-name: Testes
+name: Testes e segurança
 on: [push, pull_request]
+
+# O workflow só pode ler o código (privilégio mínimo)
+permissions:
+  contents: read
+
 jobs:
   testes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt
-      - run: pytest -q
+      - run: pip install -r requirements-dev.txt
+      - name: Testes (inclui testes de segurança)
+        run: pytest -q
+      - name: Dependências com falhas conhecidas
+        run: pip-audit -r requirements.txt

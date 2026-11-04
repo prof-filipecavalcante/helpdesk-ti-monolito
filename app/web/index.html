@@ -4,98 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HelpDesk TI</title>
-<style>
-:root{--bg:#f4f6f9;--card:#fff;--tx:#1d2433;--mut:#667085;--line:#e2e6ee;--pri:#1f5fbf;--ok:#1d8a4e;--warn:#b7791f;--bad:#c0392b}
-*{box-sizing:border-box}body{margin:0;font:14px/1.45 system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--tx)}
-header{background:#14213d;color:#fff;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
-header b{font-size:17px}header span{opacity:.75;font-size:12px}
-main{max-width:1180px;margin:0 auto;padding:18px 24px;display:grid;grid-template-columns:1fr 330px;gap:18px}
-@media(max-width:900px){main{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
-h2{font-size:14px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px}.kpi small{color:var(--mut)}.kpi b{display:block;font-size:22px}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--mut)}
-.pill{display:inline-block;white-space:nowrap;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.s-aberto{background:#e8f0fe;color:var(--pri)}.s-em_atendimento{background:#fff4e0;color:var(--warn)}.s-resolvido{background:#e6f6ec;color:var(--ok)}.s-fechado{background:#eceff3;color:var(--mut)}
-.p-critica{color:var(--bad);font-weight:700}.p-alta{color:#d35400;font-weight:600}
-label{display:block;font-size:12px;color:var(--mut);margin:8px 0 2px}
-input,select,textarea{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:6px;font:inherit}
-button{background:var(--pri);color:#fff;border:0;border-radius:6px;padding:6px 10px;font:inherit;cursor:pointer}button.sec{background:#eef2f8;color:var(--tx)}
-.acoes{display:flex;gap:6px;flex-wrap:wrap}.acoes select{width:auto;padding:4px}
-.aviso{border-left:3px solid var(--pri);padding:4px 8px;margin:6px 0;background:#f7f9fc;font-size:13px}.aviso small{color:var(--mut);display:block}
-#erro{color:var(--bad);min-height:18px;font-size:13px}
-.side{display:grid;gap:18px;align-content:start}
-</style>
+<link rel="stylesheet" href="/estilo.css">
 </head>
 <body>
-<header><div><b>HelpDesk TI</b> <span>· versão monolítica</span></div><span id="api"></span></header>
-<main>
+<header>
+  <div><b>HelpDesk TI</b> <span>· versão monolítica</span></div>
+  <div class="usuario" id="barra" hidden><span id="quem"></span><button id="sair" type="button">Sair</button></div>
+</header>
+
+<form class="card login" id="tela-login">
+  <h1>Entrar</h1>
+  <p>Use seu e-mail e senha.</p>
+  <label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required value="carla@empresa.com">
+  <label for="senha">Senha</label><input id="senha" type="password" autocomplete="current-password" required>
+  <p><button type="submit">Entrar</button></p>
+  <div id="erro-login" class="erro"></div>
+  <div class="contas">Contas de exemplo (senha definida em <code>SENHA_EXEMPLO</code>, veja o README):<br>
+    <code>admin@empresa.com</code> administrador · <code>carla@empresa.com</code> técnica · <code>ana@empresa.com</code> solicitante</div>
+</form>
+
+<main id="tela-sistema" hidden>
   <section>
     <div class="kpis" id="kpis"></div>
     <div class="card">
       <h2>Chamados</h2>
       <table><thead><tr><th>#</th><th>Chamado</th><th>Prioridade</th><th>Status</th><th>Técnico</th><th>Prazo (SLA)</th><th>Ações</th></tr></thead><tbody id="lista"></tbody></table>
-      <div id="erro"></div>
+      <div id="erro" class="erro"></div>
     </div>
   </section>
   <aside class="side">
     <form class="card" id="novo">
       <h2>Abrir chamado</h2>
-      <label for="titulo">Título</label><input id="titulo" required value="Sem acesso à internet">
-      <label for="descricao">Descrição</label><textarea id="descricao" rows="2" required>O cabo está conectado, mas não navega.</textarea>
+      <label for="titulo">Título</label><input id="titulo" required minlength="3" maxlength="120" value="Sem acesso à internet">
+      <label for="descricao">Descrição</label><textarea id="descricao" rows="2" required minlength="3" maxlength="2000">O cabo está conectado, mas não navega.</textarea>
       <label for="prioridade">Prioridade</label><select id="prioridade"><option value="baixa">Baixa (72 h)</option><option value="media">Média (24 h)</option><option value="alta" selected>Alta (8 h)</option><option value="critica">Crítica (4 h)</option></select>
-      <label for="solicitante">Solicitante</label><select id="solicitante"></select>
       <label for="ativo">Equipamento</label><select id="ativo"></select>
       <p><button type="submit">Abrir chamado</button></p>
     </form>
-    <div class="card"><h2>Notificações</h2><div id="avisos"></div></div>
+    <div class="card"><h2>Minhas notificações</h2><div id="avisos"></div></div>
   </aside>
 </main>
-<script>
-const API = window.API_URL || "";  // em microsserviços, aponte para o gateway
-document.getElementById("api").textContent = "API: " + (API || location.origin);
-const $ = id => document.getElementById(id);
-let usuarios = [], ativos = [];
-const nome = id => (usuarios.find(u => u.id === id) || {}).nome || "—";
-const fmt = s => new Date(s).toLocaleString("pt-BR", {day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit"});
-async function req(metodo, caminho, corpo) {
-  const r = await fetch(API + caminho, {method: metodo, headers: {"Content-Type": "application/json"}, body: corpo ? JSON.stringify(corpo) : undefined});
-  const dados = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(dados.detail || ("Erro " + r.status));
-  return dados;
-}
-async function carregar() {
-  $("erro").textContent = "";
-  [usuarios, ativos] = await Promise.all([req("GET", "/usuarios"), req("GET", "/ativos")]);
-  const [chamados, painel, avisos] = await Promise.all([req("GET", "/chamados"), req("GET", "/chamados/painel"), req("GET", "/notificacoes")]);
-  const ps = painel.por_status;
-  $("kpis").innerHTML = [["Total", painel.total], ["Abertos", ps.aberto || 0], ["Em atendimento", ps.em_atendimento || 0], ["Resolvidos", (ps.resolvido || 0) + (ps.fechado || 0)], ["Atrasados", painel.atrasados]]
-    .map(([t, v]) => `<div class="kpi"><small>${t}</small><b>${v}</b></div>`).join("");
-  const tecnicos = usuarios.filter(u => u.perfil === "tecnico");
-  $("lista").innerHTML = chamados.map(c => `<tr>
-    <td>${c.id}</td><td><b>${c.titulo}</b><br><small>${nome(c.solicitante_id)}</small></td>
-    <td class="p-${c.prioridade}">${c.prioridade}</td>
-    <td><span class="pill s-${c.status}">${c.status.replace("_", " ")}</span></td>
-    <td>${c.tecnico_id ? nome(c.tecnico_id) : "—"}</td><td>${fmt(c.prazo_sla)}</td>
-    <td><div class="acoes">${acoes(c, tecnicos)}</div></td></tr>`).join("");
-  $("avisos").innerHTML = avisos.slice().reverse().slice(0, 6).map(a => `<div class="aviso"><b>${a.tipo}</b> · ${nome(a.destinatario_id)}<br>${a.mensagem}<small>${fmt(a.criada_em)}</small></div>`).join("") || "<small>Nenhuma notificação.</small>";
-  $("solicitante").innerHTML = usuarios.filter(u => u.perfil === "solicitante").map(u => `<option value="${u.id}">${u.nome}</option>`).join("");
-  $("ativo").innerHTML = `<option value="">Nenhum</option>` + ativos.map(a => `<option value="${a.id}">${a.patrimonio} · ${a.descricao}</option>`).join("");
-}
-function acoes(c, tecnicos) {
-  if (c.status === "aberto") return `<select id="t${c.id}">${tecnicos.map(t => `<option value="${t.id}">${t.nome}</option>`).join("")}</select><button onclick="atribuir(${c.id})">Atribuir</button>`;
-  if (c.status === "em_atendimento") return `<button onclick="status(${c.id},'resolvido')">Resolver</button>`;
-  if (c.status === "resolvido") return `<button onclick="status(${c.id},'fechado')">Fechar</button><button class="sec" onclick="status(${c.id},'em_atendimento')">Reabrir</button>`;
-  return "";
-}
-async function acao(f) { try { await f(); await carregar(); } catch (e) { $("erro").textContent = e.message; } }
-const atribuir = id => acao(() => req("PATCH", `/chamados/${id}/atribuir`, {tecnico_id: +$("t" + id).value}));
-const status = (id, s) => acao(() => req("PATCH", `/chamados/${id}/status`, {status: s}));
-$("novo").addEventListener("submit", e => { e.preventDefault(); acao(() => req("POST", "/chamados", {
-  titulo: $("titulo").value, descricao: $("descricao").value, prioridade: $("prioridade").value,
-  solicitante_id: +$("solicitante").value, ativo_id: $("ativo").value ? +$("ativo").value : null })); });
-carregar().catch(e => $("erro").textContent = e.message);
-</script>
+<script src="/app.js"></script>
 </body>
 </html>

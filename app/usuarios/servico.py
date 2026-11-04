@@ -1,6 +1,7 @@
 """Regras do módulo de usuários. É a porta pública do módulo."""
 from sqlalchemy.orm import Session
 
+from app.auth import senhas
 from app.erros import NaoEncontrado, RegraDeNegocio
 from app.usuarios import repositorio
 from app.usuarios.esquemas import UsuarioCriar
@@ -8,9 +9,15 @@ from app.usuarios.modelos import Usuario
 
 
 def criar(db: Session, dados: UsuarioCriar) -> Usuario:
-    if repositorio.buscar_por_email(db, dados.email):
+    email = dados.email.lower()
+    if repositorio.buscar_por_email(db, email):
         raise RegraDeNegocio("Já existe um usuário com este e-mail.")
-    return repositorio.salvar(db, Usuario(**dados.model_dump()))
+    usuario = Usuario(nome=dados.nome, email=email, perfil=dados.perfil, senha_hash=senhas.gerar_hash(dados.senha))
+    return repositorio.salvar(db, usuario)
+
+
+def buscar_por_email(db: Session, email: str) -> Usuario | None:
+    return repositorio.buscar_por_email(db, email.lower())
 
 
 def obter(db: Session, usuario_id: int) -> Usuario:

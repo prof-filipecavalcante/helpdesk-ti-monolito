@@ -1,31 +1,39 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 Prioridade = Literal["baixa", "media", "alta", "critica"]
 Status = Literal["aberto", "em_atendimento", "resolvido", "fechado"]
 
 
+ENTRADA = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+
 class ChamadoCriar(BaseModel):
-    titulo: str
-    descricao: str
+    """O solicitante é sempre o usuário logado: não vem no corpo da requisição."""
+    model_config = ENTRADA
+
+    titulo: str = Field(min_length=3, max_length=120)
+    descricao: str = Field(min_length=3, max_length=2000)
     prioridade: Prioridade
-    solicitante_id: int
-    ativo_id: int | None = None
+    ativo_id: int | None = Field(default=None, gt=0)
 
 
 class Atribuicao(BaseModel):
-    tecnico_id: int
+    model_config = ENTRADA
+    tecnico_id: int = Field(gt=0)
 
 
 class MudancaStatus(BaseModel):
+    model_config = ENTRADA
     status: Status
 
 
 class ComentarioCriar(BaseModel):
-    autor_id: int
-    texto: str
+    """O autor é sempre o usuário logado."""
+    model_config = ENTRADA
+    texto: str = Field(min_length=1, max_length=2000)
 
 
 class ComentarioSaida(BaseModel):
