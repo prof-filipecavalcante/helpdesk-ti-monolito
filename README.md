@@ -4,6 +4,14 @@ Sistema de chamados de TI (no estilo de um GLPI simplificado), feito em **Python
 É a aplicação base da atividade de **Arquitetura de Software**: hoje ela é um **monólito**;
 a missão da turma é transformá-la em **microsserviços** (veja [DESAFIO.md](DESAFIO.md)).
 
+## Telas do sistema
+
+![Demonstração: abrir, atribuir, resolver e fechar um chamado](docs/demo.gif)
+
+| Painel inicial | Chamado aberto | Chamado resolvido |
+|---|---|---|
+| ![Painel](docs/01-painel.png) | ![Chamado aberto](docs/02-chamado-aberto.png) | ![Chamado resolvido](docs/03-chamado-resolvido.png) |
+
 ## O que o sistema faz
 
 - Cadastra **usuários** (solicitantes e técnicos) e **equipamentos** (inventário de TI).
