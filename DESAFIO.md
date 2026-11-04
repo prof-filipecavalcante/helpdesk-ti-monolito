@@ -1,20 +1,19 @@
 # Desafio: do monólito aos microsserviços
 
 **Disciplina:** Arquitetura de Software · **Prof. Filipe Cavalcante**
-**Modalidade:** em grupo (até 4 pessoas)
+**Modalidade:** individual
 
 ## A missão
 
 O **HelpDesk TI** funciona, mas é um **monólito**: uma aplicação, um banco e uma implantação.
-A empresa cresceu e cada parte do sistema passou a ter um time próprio. A missão do grupo é
+A empresa cresceu e cada parte do sistema passou a ter um time próprio. A sua missão é
 **transformar o HelpDesk em microsserviços**, sem perder nenhuma funcionalidade.
 
 ## Como começar
 
 1. No topo deste repositório, clique em **Use this template → Create a new repository**.
-2. Crie o repositório na conta de um integrante, **público**, com o nome `helpdesk-microsservicos-<nome-do-grupo>`.
-3. Adicione os outros integrantes como colaboradores (**Settings → Collaborators**).
-4. Rode o monólito antes de mudar qualquer coisa (veja o [README](README.md)) e conheça as telas e as rotas.
+2. Crie o repositório na **sua conta**, **público**, com o nome `helpdesk-microsservicos-<seu-nome>`.
+3. Rode o monólito antes de mudar qualquer coisa (veja o [README](README.md)) e conheça as telas e as rotas.
 
 ## Onde está hoje (monólito)
 
@@ -33,7 +32,7 @@ flowchart TB
     App --> BD[(Banco único)]
 ```
 
-## Aonde o grupo deve chegar
+## Aonde você deve chegar
 
 ```mermaid
 flowchart TB
@@ -61,7 +60,7 @@ As linhas tracejadas são o **bônus**.
 5. **API Gateway:** um único ponto de entrada (porta 8000) que encaminha cada rota para o serviço certo. A tela do HelpDesk deve continuar funcionando por ele, sem mudar o endereço.
 6. **Tudo sobe com um comando:** `docker compose up --build` inicia todos os serviços, bancos e o gateway.
 7. **Mesmas funcionalidades:** abrir, atribuir, mudar status, comentar e ver o painel continuam funcionando, com as mesmas regras (SLA e transições de status).
-8. **README do grupo:** diagrama da nova arquitetura em Mermaid, como rodar, quem fez o quê e as decisões tomadas.
+8. **README do projeto:** diagrama da nova arquitetura em Mermaid, como rodar e as decisões que você tomou.
 
 ## Bônus
 
@@ -87,9 +86,9 @@ As linhas tracejadas são o **bônus**.
 | Execução | `docker compose up --build` sobe tudo sem ajustes manuais |
 | Funcionalidades | Fluxo completo de um chamado funcionando |
 | Documentação | README com diagrama, instruções e decisões |
-| Colaboração | Commits de todos os integrantes ao longo do trabalho |
+| Histórico | Commits ao longo do trabalho, um serviço por vez, com mensagens claras |
 | Bônus | Eventos, testes por serviço e rota de saúde |
 
 ## Entrega
 
-Envie ao professor o **link do repositório do grupo**, no prazo combinado em aula.
+Envie ao professor o **link do seu repositório**, no prazo combinado em aula.
